@@ -44,3 +44,13 @@ export default function ThemeSwitcher() {
     </>
   );
 }
+
+export function ThemeSwitchNonAuth() {
+  return (
+    <>
+      <div className="absolute top-5 right-5">
+        <ThemeSwitcher />
+      </div>
+    </>
+  );
+}

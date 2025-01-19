@@ -17,7 +17,11 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const IndexLazyImport = createFileRoute('/')()
+const authResetPasswordLazyImport = createFileRoute('/(auth)/reset-password')()
 const authLoginLazyImport = createFileRoute('/(auth)/login')()
+const authForgotPasswordLazyImport = createFileRoute(
+  '/(auth)/forgot-password',
+)()
 
 // Create/Update Routes
 
@@ -27,6 +31,16 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const authResetPasswordLazyRoute = authResetPasswordLazyImport
+  .update({
+    id: '/(auth)/reset-password',
+    path: '/reset-password',
+    getParentRoute: () => rootRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(auth)/reset-password.lazy').then((d) => d.Route),
+  )
+
 const authLoginLazyRoute = authLoginLazyImport
   .update({
     id: '/(auth)/login',
@@ -34,6 +48,16 @@ const authLoginLazyRoute = authLoginLazyImport
     getParentRoute: () => rootRoute,
   } as any)
   .lazy(() => import('./routes/(auth)/login.lazy').then((d) => d.Route))
+
+const authForgotPasswordLazyRoute = authForgotPasswordLazyImport
+  .update({
+    id: '/(auth)/forgot-password',
+    path: '/forgot-password',
+    getParentRoute: () => rootRoute,
+  } as any)
+  .lazy(() =>
+    import('./routes/(auth)/forgot-password.lazy').then((d) => d.Route),
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -46,11 +70,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/(auth)/forgot-password': {
+      id: '/(auth)/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof authForgotPasswordLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/(auth)/login': {
       id: '/(auth)/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof authLoginLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/(auth)/reset-password': {
+      id: '/(auth)/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof authResetPasswordLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -60,37 +98,52 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/forgot-password': typeof authForgotPasswordLazyRoute
   '/login': typeof authLoginLazyRoute
+  '/reset-password': typeof authResetPasswordLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/forgot-password': typeof authForgotPasswordLazyRoute
   '/login': typeof authLoginLazyRoute
+  '/reset-password': typeof authResetPasswordLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/(auth)/forgot-password': typeof authForgotPasswordLazyRoute
   '/(auth)/login': typeof authLoginLazyRoute
+  '/(auth)/reset-password': typeof authResetPasswordLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login'
+  fullPaths: '/' | '/forgot-password' | '/login' | '/reset-password'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login'
-  id: '__root__' | '/' | '/(auth)/login'
+  to: '/' | '/forgot-password' | '/login' | '/reset-password'
+  id:
+    | '__root__'
+    | '/'
+    | '/(auth)/forgot-password'
+    | '/(auth)/login'
+    | '/(auth)/reset-password'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  authForgotPasswordLazyRoute: typeof authForgotPasswordLazyRoute
   authLoginLazyRoute: typeof authLoginLazyRoute
+  authResetPasswordLazyRoute: typeof authResetPasswordLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  authForgotPasswordLazyRoute: authForgotPasswordLazyRoute,
   authLoginLazyRoute: authLoginLazyRoute,
+  authResetPasswordLazyRoute: authResetPasswordLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -104,14 +157,22 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/(auth)/login"
+        "/(auth)/forgot-password",
+        "/(auth)/login",
+        "/(auth)/reset-password"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
     },
+    "/(auth)/forgot-password": {
+      "filePath": "(auth)/forgot-password.lazy.tsx"
+    },
     "/(auth)/login": {
       "filePath": "(auth)/login.lazy.tsx"
+    },
+    "/(auth)/reset-password": {
+      "filePath": "(auth)/reset-password.lazy.tsx"
     }
   }
 }
