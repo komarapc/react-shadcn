@@ -21,10 +21,15 @@ function RouteComponent() {
           <CardHeader>
             <CardTitle>Blank Card</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-wrap gap-2 items-center">
             <Button onClick={() => setCount((val) => val + 1)}>
               Click me {count}
             </Button>
+            <Button variant={"secondary"}>Secondary</Button>
+            <Button variant={"success"}>Success</Button>
+            <Button variant={"warning"}>Warning</Button>
+            <Button variant={"info"}>Info</Button>
+            <Button variant={"destructive"}>Destructive</Button>
           </CardContent>
         </Card>
       </DefaultDashboard>

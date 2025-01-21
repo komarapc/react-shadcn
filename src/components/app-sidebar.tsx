@@ -10,6 +10,7 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  Layers,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -131,6 +132,29 @@ const data = {
         {
           title: "Limits",
           url: "#",
+        },
+      ],
+    },
+    {
+      title: "Pages",
+      url: "#",
+      icon: Layers,
+      items: [
+        {
+          title: "Home",
+          url: "/",
+        },
+        {
+          title: "Login",
+          url: "/login",
+        },
+        {
+          title: "Forgot Password",
+          url: "/forgot-password",
+        },
+        {
+          title: "Reset Password",
+          url: "/reset-password",
         },
       ],
     },
