@@ -34,7 +34,7 @@ export default function ForgotPassword() {
               variant="ghost"
               onClick={() => router.navigate({ to: "/login" })}
             >
-              Back to Login
+              Sign in
             </Button>
           </CardFooter>
         </Card>
