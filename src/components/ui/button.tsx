@@ -1,8 +1,10 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-
+import { Loading } from "./loading";
 import { cn } from "@/lib/utils";
+
+type LoaderPosition = "start" | "end";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -38,7 +40,7 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps
@@ -46,12 +48,23 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   showRing?: boolean;
+  loading?: boolean;
+  loaderPosition?: LoaderPosition;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, asChild = false, showRing = false, ...props },
-    ref,
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      showRing = false,
+      loading = false,
+      loaderPosition = "start",
+      ...props
+    },
+    ref
   ) => {
     const Comp = asChild ? Slot : "button";
     return (
@@ -59,13 +72,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           buttonVariants({ variant, size, className }),
           showRing &&
-            "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent",
+            "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent"
         )}
         ref={ref}
         {...props}
-      />
+      >
+        {loading && loaderPosition === "start" && <Loading />}
+        {props.children}
+        {loading && loaderPosition === "end" && <Loading />}
+      </Comp>
     );
-  },
+  }
 );
 Button.displayName = "Button";
 
